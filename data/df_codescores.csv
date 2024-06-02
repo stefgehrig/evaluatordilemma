@@ -1,0 +1,265 @@
+village,dimension,score,dimension_coding
+Kakoi,rs2.1.commons.boundaries,1,ordinal: clearer boundaries
+Kakoi,rs2.2.commons.boundary.negotiability,2,ordinal: more negotiability
+Kakoi,gs2.1.external.support,1,ordinal: more external support
+Kakoi,gs3.2.property.security,1,ordinal: more property security
+Kakoi,gs4.1.rules-in-use,1,binary: in place (2) or not (1)
+Kakoi,gs4.2.governance.strictness.trend,3,ordinal: trend towards more strictness
+Kakoi,gs5.1.external.recognition,2,ordinal: more recognition
+Kakoi,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Kakoi,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Kakoi,gs5.5.commons.political.power,2,ordinal: more power
+Kakoi,gs6.2.outsider.exclusion,3,ordinal: more exclusion
+Kakoi,gs7.1.environmental.monitoring,1,ordinal: more environmental monitoring
+Kakoi,gs7.2.self.sanctions,2,ordinal: more severe sanctions
+Kakoi,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Kakoi,a4.1.leadership.accountability,3,ordinal: more accountability
+Kakoi,a5.1.actor.group.trust,2,ordinal: more intra-trust
+Kakoi,a5.2.inter-group.trust,1,ordinal: more inter-trust
+Kakoi,i1.1.conflict.resolution,1,binary: in place (2) or not (1)
+Kakoi,i2.1.participation.in.social.monitoring.(enforcement),1,ordinal: more monitoring participation
+Kakoi,o1.1.compliance,2,ordinal: more compliance
+Kakoi,o2.1.commons.condition.trend,1,ordinal: more improvement
+Kakoi,o2.3.invasives,1,ordinal: less problems due to invasives
+Katikati,rs2.1.commons.boundaries,3,ordinal: clearer boundaries
+Katikati,rs2.2.commons.boundary.negotiability,1,ordinal: more negotiability
+Katikati,gs2.1.external.support,2,ordinal: more external support
+Katikati,gs3.2.property.security,2,ordinal: more property security
+Katikati,gs4.1.rules-in-use,2,binary: in place (2) or not (1)
+Katikati,gs4.2.governance.strictness.trend,3,ordinal: trend towards more strictness
+Katikati,gs5.1.external.recognition,2,ordinal: more recognition
+Katikati,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Katikati,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Katikati,gs5.5.commons.political.power,2,ordinal: more power
+Katikati,gs6.2.outsider.exclusion,2,ordinal: more exclusion
+Katikati,gs7.1.environmental.monitoring,2,ordinal: more environmental monitoring
+Katikati,gs7.2.self.sanctions,3,ordinal: more severe sanctions
+Katikati,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Katikati,a4.1.leadership.accountability,3,ordinal: more accountability
+Katikati,a5.1.actor.group.trust,3,ordinal: more intra-trust
+Katikati,a5.2.inter-group.trust,2,ordinal: more inter-trust
+Katikati,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Katikati,i2.1.participation.in.social.monitoring.(enforcement),3,ordinal: more monitoring participation
+Katikati,o1.1.compliance,3,ordinal: more compliance
+Katikati,o2.1.commons.condition.trend,3,ordinal: more improvement
+Katikati,o2.3.invasives,3,ordinal: less problems due to invasives
+Olchoro Onyokie,rs2.1.commons.boundaries,3,ordinal: clearer boundaries
+Olchoro Onyokie,rs2.2.commons.boundary.negotiability,2,ordinal: more negotiability
+Olchoro Onyokie,gs2.1.external.support,1,ordinal: more external support
+Olchoro Onyokie,gs3.2.property.security,3,ordinal: more property security
+Olchoro Onyokie,gs4.1.rules-in-use,2,binary: in place (2) or not (1)
+Olchoro Onyokie,gs4.2.governance.strictness.trend,3,ordinal: trend towards more strictness
+Olchoro Onyokie,gs5.1.external.recognition,2,ordinal: more recognition
+Olchoro Onyokie,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Olchoro Onyokie,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Olchoro Onyokie,gs5.5.commons.political.power,2,ordinal: more power
+Olchoro Onyokie,gs6.2.outsider.exclusion,2,ordinal: more exclusion
+Olchoro Onyokie,gs7.1.environmental.monitoring,3,ordinal: more environmental monitoring
+Olchoro Onyokie,gs7.2.self.sanctions,3,ordinal: more severe sanctions
+Olchoro Onyokie,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Olchoro Onyokie,a4.1.leadership.accountability,3,ordinal: more accountability
+Olchoro Onyokie,a5.1.actor.group.trust,3,ordinal: more intra-trust
+Olchoro Onyokie,a5.2.inter-group.trust,2,ordinal: more inter-trust
+Olchoro Onyokie,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Olchoro Onyokie,i2.1.participation.in.social.monitoring.(enforcement),3,ordinal: more monitoring participation
+Olchoro Onyokie,o1.1.compliance,3,ordinal: more compliance
+Olchoro Onyokie,o2.1.commons.condition.trend,3,ordinal: more improvement
+Olchoro Onyokie,o2.3.invasives,1,ordinal: less problems due to invasives
+Eleng'ata Dapash,rs2.1.commons.boundaries,3,ordinal: clearer boundaries
+Eleng'ata Dapash,rs2.2.commons.boundary.negotiability,2,ordinal: more negotiability
+Eleng'ata Dapash,gs2.1.external.support,2,ordinal: more external support
+Eleng'ata Dapash,gs3.2.property.security,3,ordinal: more property security
+Eleng'ata Dapash,gs4.1.rules-in-use,2,binary: in place (2) or not (1)
+Eleng'ata Dapash,gs4.2.governance.strictness.trend,2,ordinal: trend towards more strictness
+Eleng'ata Dapash,gs5.1.external.recognition,2,ordinal: more recognition
+Eleng'ata Dapash,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Eleng'ata Dapash,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Eleng'ata Dapash,gs5.5.commons.political.power,2,ordinal: more power
+Eleng'ata Dapash,gs6.2.outsider.exclusion,2,ordinal: more exclusion
+Eleng'ata Dapash,gs7.1.environmental.monitoring,2,ordinal: more environmental monitoring
+Eleng'ata Dapash,gs7.2.self.sanctions,2,ordinal: more severe sanctions
+Eleng'ata Dapash,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Eleng'ata Dapash,a4.1.leadership.accountability,3,ordinal: more accountability
+Eleng'ata Dapash,a5.1.actor.group.trust,3,ordinal: more intra-trust
+Eleng'ata Dapash,a5.2.inter-group.trust,3,ordinal: more inter-trust
+Eleng'ata Dapash,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Eleng'ata Dapash,i2.1.participation.in.social.monitoring.(enforcement),3,ordinal: more monitoring participation
+Eleng'ata Dapash,o1.1.compliance,3,ordinal: more compliance
+Eleng'ata Dapash,o2.1.commons.condition.trend,3,ordinal: more improvement
+Eleng'ata Dapash,o2.3.invasives,1,ordinal: less problems due to invasives
+Losirwa,rs2.1.commons.boundaries,3,ordinal: clearer boundaries
+Losirwa,rs2.2.commons.boundary.negotiability,2,ordinal: more negotiability
+Losirwa,gs2.1.external.support,2,ordinal: more external support
+Losirwa,gs3.2.property.security,1,ordinal: more property security
+Losirwa,gs4.1.rules-in-use,2,binary: in place (2) or not (1)
+Losirwa,gs4.2.governance.strictness.trend,2,ordinal: trend towards more strictness
+Losirwa,gs5.1.external.recognition,2,ordinal: more recognition
+Losirwa,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Losirwa,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Losirwa,gs5.5.commons.political.power,2,ordinal: more power
+Losirwa,gs6.2.outsider.exclusion,2,ordinal: more exclusion
+Losirwa,gs7.1.environmental.monitoring,2,ordinal: more environmental monitoring
+Losirwa,gs7.2.self.sanctions,3,ordinal: more severe sanctions
+Losirwa,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Losirwa,a4.1.leadership.accountability,2,ordinal: more accountability
+Losirwa,a5.1.actor.group.trust,3,ordinal: more intra-trust
+Losirwa,a5.2.inter-group.trust,3,ordinal: more inter-trust
+Losirwa,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Losirwa,i2.1.participation.in.social.monitoring.(enforcement),3,ordinal: more monitoring participation
+Losirwa,o1.1.compliance,2,ordinal: more compliance
+Losirwa,o2.1.commons.condition.trend,1,ordinal: more improvement
+Losirwa,o2.3.invasives,1,ordinal: less problems due to invasives
+Nadonjukin,rs2.1.commons.boundaries,3,ordinal: clearer boundaries
+Nadonjukin,rs2.2.commons.boundary.negotiability,2,ordinal: more negotiability
+Nadonjukin,gs2.1.external.support,3,ordinal: more external support
+Nadonjukin,gs3.2.property.security,2,ordinal: more property security
+Nadonjukin,gs4.1.rules-in-use,2,binary: in place (2) or not (1)
+Nadonjukin,gs4.2.governance.strictness.trend,3,ordinal: trend towards more strictness
+Nadonjukin,gs5.1.external.recognition,2,ordinal: more recognition
+Nadonjukin,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Nadonjukin,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Nadonjukin,gs5.5.commons.political.power,2,ordinal: more power
+Nadonjukin,gs6.2.outsider.exclusion,2,ordinal: more exclusion
+Nadonjukin,gs7.1.environmental.monitoring,3,ordinal: more environmental monitoring
+Nadonjukin,gs7.2.self.sanctions,3,ordinal: more severe sanctions
+Nadonjukin,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Nadonjukin,a4.1.leadership.accountability,3,ordinal: more accountability
+Nadonjukin,a5.1.actor.group.trust,3,ordinal: more intra-trust
+Nadonjukin,a5.2.inter-group.trust,3,ordinal: more inter-trust
+Nadonjukin,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Nadonjukin,i2.1.participation.in.social.monitoring.(enforcement),3,ordinal: more monitoring participation
+Nadonjukin,o1.1.compliance,2,ordinal: more compliance
+Nadonjukin,o2.1.commons.condition.trend,3,ordinal: more improvement
+Nadonjukin,o2.3.invasives,1,ordinal: less problems due to invasives
+Sangaiwe,rs2.1.commons.boundaries,1,ordinal: clearer boundaries
+Sangaiwe,rs2.2.commons.boundary.negotiability,2,ordinal: more negotiability
+Sangaiwe,gs2.1.external.support,1,ordinal: more external support
+Sangaiwe,gs3.2.property.security,1,ordinal: more property security
+Sangaiwe,gs4.1.rules-in-use,1,binary: in place (2) or not (1)
+Sangaiwe,gs4.2.governance.strictness.trend,2,ordinal: trend towards more strictness
+Sangaiwe,gs5.1.external.recognition,2,ordinal: more recognition
+Sangaiwe,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Sangaiwe,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Sangaiwe,gs5.5.commons.political.power,2,ordinal: more power
+Sangaiwe,gs6.2.outsider.exclusion,1,ordinal: more exclusion
+Sangaiwe,gs7.1.environmental.monitoring,1,ordinal: more environmental monitoring
+Sangaiwe,gs7.2.self.sanctions,2,ordinal: more severe sanctions
+Sangaiwe,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Sangaiwe,a4.1.leadership.accountability,3,ordinal: more accountability
+Sangaiwe,a5.1.actor.group.trust,2,ordinal: more intra-trust
+Sangaiwe,a5.2.inter-group.trust,2,ordinal: more inter-trust
+Sangaiwe,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Sangaiwe,i2.1.participation.in.social.monitoring.(enforcement),1,ordinal: more monitoring participation
+Sangaiwe,o1.1.compliance,3,ordinal: more compliance
+Sangaiwe,o2.1.commons.condition.trend,1,ordinal: more improvement
+Sangaiwe,o2.3.invasives,1,ordinal: less problems due to invasives
+Kimana,rs2.1.commons.boundaries,2,ordinal: clearer boundaries
+Kimana,rs2.2.commons.boundary.negotiability,1,ordinal: more negotiability
+Kimana,gs2.1.external.support,1,ordinal: more external support
+Kimana,gs3.2.property.security,1,ordinal: more property security
+Kimana,gs4.1.rules-in-use,1,binary: in place (2) or not (1)
+Kimana,gs4.2.governance.strictness.trend,1,ordinal: trend towards more strictness
+Kimana,gs5.1.external.recognition,2,ordinal: more recognition
+Kimana,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Kimana,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Kimana,gs5.5.commons.political.power,2,ordinal: more power
+Kimana,gs6.2.outsider.exclusion,1,ordinal: more exclusion
+Kimana,gs7.1.environmental.monitoring,2,ordinal: more environmental monitoring
+Kimana,gs7.2.self.sanctions,1,ordinal: more severe sanctions
+Kimana,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Kimana,a4.1.leadership.accountability,3,ordinal: more accountability
+Kimana,a5.1.actor.group.trust,2,ordinal: more intra-trust
+Kimana,a5.2.inter-group.trust,2,ordinal: more inter-trust
+Kimana,i1.1.conflict.resolution,1,binary: in place (2) or not (1)
+Kimana,i2.1.participation.in.social.monitoring.(enforcement),1,ordinal: more monitoring participation
+Kimana,o1.1.compliance,1,ordinal: more compliance
+Kimana,o2.1.commons.condition.trend,1,ordinal: more improvement
+Kimana,o2.3.invasives,1,ordinal: less problems due to invasives
+Ngoswaki,rs2.1.commons.boundaries,3,ordinal: clearer boundaries
+Ngoswaki,rs2.2.commons.boundary.negotiability,2,ordinal: more negotiability
+Ngoswaki,gs2.1.external.support,3,ordinal: more external support
+Ngoswaki,gs3.2.property.security,3,ordinal: more property security
+Ngoswaki,gs4.1.rules-in-use,2,binary: in place (2) or not (1)
+Ngoswaki,gs4.2.governance.strictness.trend,3,ordinal: trend towards more strictness
+Ngoswaki,gs5.1.external.recognition,2,ordinal: more recognition
+Ngoswaki,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Ngoswaki,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Ngoswaki,gs5.5.commons.political.power,2,ordinal: more power
+Ngoswaki,gs6.2.outsider.exclusion,2,ordinal: more exclusion
+Ngoswaki,gs7.1.environmental.monitoring,3,ordinal: more environmental monitoring
+Ngoswaki,gs7.2.self.sanctions,2,ordinal: more severe sanctions
+Ngoswaki,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Ngoswaki,a4.1.leadership.accountability,3,ordinal: more accountability
+Ngoswaki,a5.1.actor.group.trust,3,ordinal: more intra-trust
+Ngoswaki,a5.2.inter-group.trust,3,ordinal: more inter-trust
+Ngoswaki,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Ngoswaki,i2.1.participation.in.social.monitoring.(enforcement),3,ordinal: more monitoring participation
+Ngoswaki,o1.1.compliance,3,ordinal: more compliance
+Ngoswaki,o2.1.commons.condition.trend,3,ordinal: more improvement
+Ngoswaki,o2.3.invasives,1,ordinal: less problems due to invasives
+Matale A,rs2.1.commons.boundaries,3,ordinal: clearer boundaries
+Matale A,rs2.2.commons.boundary.negotiability,2,ordinal: more negotiability
+Matale A,gs2.1.external.support,3,ordinal: more external support
+Matale A,gs3.2.property.security,3,ordinal: more property security
+Matale A,gs4.1.rules-in-use,2,binary: in place (2) or not (1)
+Matale A,gs4.2.governance.strictness.trend,3,ordinal: trend towards more strictness
+Matale A,gs5.1.external.recognition,2,ordinal: more recognition
+Matale A,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Matale A,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Matale A,gs5.5.commons.political.power,2,ordinal: more power
+Matale A,gs6.2.outsider.exclusion,2,ordinal: more exclusion
+Matale A,gs7.1.environmental.monitoring,3,ordinal: more environmental monitoring
+Matale A,gs7.2.self.sanctions,3,ordinal: more severe sanctions
+Matale A,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Matale A,a4.1.leadership.accountability,3,ordinal: more accountability
+Matale A,a5.1.actor.group.trust,3,ordinal: more intra-trust
+Matale A,a5.2.inter-group.trust,3,ordinal: more inter-trust
+Matale A,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Matale A,i2.1.participation.in.social.monitoring.(enforcement),3,ordinal: more monitoring participation
+Matale A,o1.1.compliance,3,ordinal: more compliance
+Matale A,o2.1.commons.condition.trend,3,ordinal: more improvement
+Matale A,o2.3.invasives,2,ordinal: less problems due to invasives
+Engaruka Chini,rs2.1.commons.boundaries,3,ordinal: clearer boundaries
+Engaruka Chini,rs2.2.commons.boundary.negotiability,1,ordinal: more negotiability
+Engaruka Chini,gs2.1.external.support,3,ordinal: more external support
+Engaruka Chini,gs3.2.property.security,3,ordinal: more property security
+Engaruka Chini,gs4.1.rules-in-use,2,binary: in place (2) or not (1)
+Engaruka Chini,gs4.2.governance.strictness.trend,3,ordinal: trend towards more strictness
+Engaruka Chini,gs5.1.external.recognition,2,ordinal: more recognition
+Engaruka Chini,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Engaruka Chini,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Engaruka Chini,gs5.5.commons.political.power,2,ordinal: more power
+Engaruka Chini,gs6.2.outsider.exclusion,1,ordinal: more exclusion
+Engaruka Chini,gs7.1.environmental.monitoring,3,ordinal: more environmental monitoring
+Engaruka Chini,gs7.2.self.sanctions,3,ordinal: more severe sanctions
+Engaruka Chini,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Engaruka Chini,a4.1.leadership.accountability,3,ordinal: more accountability
+Engaruka Chini,a5.1.actor.group.trust,3,ordinal: more intra-trust
+Engaruka Chini,a5.2.inter-group.trust,3,ordinal: more inter-trust
+Engaruka Chini,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Engaruka Chini,i2.1.participation.in.social.monitoring.(enforcement),3,ordinal: more monitoring participation
+Engaruka Chini,o1.1.compliance,3,ordinal: more compliance
+Engaruka Chini,o2.1.commons.condition.trend,1,ordinal: more improvement
+Engaruka Chini,o2.3.invasives,1,ordinal: less problems due to invasives
+Kitwai A,rs2.1.commons.boundaries,3,ordinal: clearer boundaries
+Kitwai A,rs2.2.commons.boundary.negotiability,2,ordinal: more negotiability
+Kitwai A,gs2.1.external.support,3,ordinal: more external support
+Kitwai A,gs3.2.property.security,2,ordinal: more property security
+Kitwai A,gs4.1.rules-in-use,2,binary: in place (2) or not (1)
+Kitwai A,gs4.2.governance.strictness.trend,3,ordinal: trend towards more strictness
+Kitwai A,gs5.1.external.recognition,2,ordinal: more recognition
+Kitwai A,gs5.3.participation.in.rule.making,3,ordinal: more participation in rules
+Kitwai A,gs5.4.participation.in.zoning,3,ordinal: more participation in zoning
+Kitwai A,gs5.5.commons.political.power,2,ordinal: more power
+Kitwai A,gs6.2.outsider.exclusion,2,ordinal: more exclusion
+Kitwai A,gs7.1.environmental.monitoring,3,ordinal: more environmental monitoring
+Kitwai A,gs7.2.self.sanctions,3,ordinal: more severe sanctions
+Kitwai A,gs7.3.external.sanctions,1,binary: in place (2) or not (1)
+Kitwai A,a4.1.leadership.accountability,3,ordinal: more accountability
+Kitwai A,a5.1.actor.group.trust,3,ordinal: more intra-trust
+Kitwai A,a5.2.inter-group.trust,2,ordinal: more inter-trust
+Kitwai A,i1.1.conflict.resolution,2,binary: in place (2) or not (1)
+Kitwai A,i2.1.participation.in.social.monitoring.(enforcement),3,ordinal: more monitoring participation
+Kitwai A,o1.1.compliance,3,ordinal: more compliance
+Kitwai A,o2.1.commons.condition.trend,3,ordinal: more improvement
+Kitwai A,o2.3.invasives,1,ordinal: less problems due to invasives
