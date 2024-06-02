@@ -1,0 +1,64 @@
+---
+output:
+  officedown::rdocx_document:
+    base_format: "bookdown::word_document2"
+    fig_caption: yes
+    number_sections: false
+    reference_num: true
+    toc: false
+---
+
+```{r setup, include=FALSE}
+library(officer)
+library(tidyverse)
+library(flextable)
+knitr::opts_chunk$set(echo = FALSE)
+tablab_text <- fp_text(bold = FALSE, font.family = "Segoe UI", font.size = 12, italic = TRUE)
+
+FitFlextableToPage <- function(ft, pgwidth = 6){
+  ft_out <- ft %>% autofit()
+  ft_out <- width(ft_out, width = dim(ft_out)$widths*pgwidth /(flextable_dim(ft_out)$widths))
+  return(ft_out)
+}
+
+parstab_irt  <- readRDS("../Robjects/table_parameters_irt.rds")
+parstab_bare <- readRDS("../Robjects/table_parameters_bare.rds")
+```
+
+```{r irtpartab}
+parstab_irt %>%
+  mutate(varlabel = str_remove_all(varlabel, "\\$")) %>% 
+  flextable() %>% 
+  compose(j = "varlabel", value = as_paragraph(as_equation(varlabel)))%>% 
+   set_header_labels(
+    values = c("Parameter", "Mean", "SD", "P05", "P50", "P95")
+  ) %>% 
+  set_caption(
+    caption = "Summary of posterior distributions for parameters in the IRT model that are not village- or item-specific.",
+  autonum = run_autonum(prop = tablab_text, bkm = "irtpartab"),
+  style = "Table Caption") %>% 
+  colformat_double(digits = 3) %>% 
+  fontsize(size = 10, part = "all")%>%
+  FitFlextableToPage() %>% 
+  add_footer_lines("'P' refers to percentile.") 
+```
+
+\newpage
+
+```{r barepartab}
+parstab_bare %>%
+  mutate(varlabel = str_remove_all(varlabel, "\\$")) %>% 
+  flextable() %>% 
+  compose(j = "varlabel", value = as_paragraph(as_equation(varlabel)))%>% 
+   set_header_labels(
+    values = c("Parameter", "Mean", "SD", "P05", "P50", "P95")
+  ) %>% 
+  set_caption(
+    caption = "Summary of posterior distributions for parameters in the regression for bare ground cover.",
+  autonum = run_autonum(prop = tablab_text, bkm = "barepartab"),
+  style = "Table Caption") %>% 
+  colformat_double(digits = 3) %>% 
+  fontsize(size = 10, part = "all")%>%
+  FitFlextableToPage() %>% 
+  add_footer_lines("'P' refers to percentile.") 
+```
