@@ -623,3 +623,8 @@ p_upperpanel <- p_re1a + p_re1b
 png("results/plot_mainresults.png", width = 3500, height = 3500, res = 310)
 p_upperpanel / p_middlepanel / p_lowerpanel  & plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
 dev.off()
+
+#############################
+#### export session info ####
+#############################
+writeLines(capture.output(sessionInfo()), "sessionInfo.txt")
