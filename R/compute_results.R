@@ -338,7 +338,7 @@ pars_tab <- map_dfr(other_pars, function(x){
   mutate(across(where(is.numeric), ~style_number(.x))) %>% 
   select(-.variable)
 
-saveRDS(pars_tab, file = "Robjects/table_other_parameters_irt.rds")
+saveRDS(pars_tab, file = "Robjects/table_parameters_irt.rds")
 write.xlsx(pars_tab, file = "results/table_parameters_irt.xlsx")
 
 # bare ground regression estimates
