@@ -5,9 +5,9 @@ This repository contains data and analysis code to reproduce results from the ar
 <body> 
  
 <div style="display: flex;"> 
-  <img src="results/plot_radar.png" style="height: 150px;"> 
-  <img src="results/plot_dags.png" style="height: 150px;"> 
-  <img src="results/plot_mainresults.png" style="height: 150px;"> 
+  <img src="results/plot_radar.png" style="height: 180px;"> 
+  <img src="results/plot_dags.png" style="height: 180px;"> 
+  <img src="results/plot_mainresults.png" style="height: 180px;"> 
 </div> 
  
 </body> 
