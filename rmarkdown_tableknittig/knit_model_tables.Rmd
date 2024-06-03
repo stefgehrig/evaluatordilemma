@@ -21,8 +21,8 @@ FitFlextableToPage <- function(ft, pgwidth = 6){
   return(ft_out)
 }
 
-parstab_irt  <- readRDS("../Robjects/table_parameters_irt.rds")
-parstab_bare <- readRDS("../Robjects/table_parameters_bare.rds")
+parstab_irt  <- openxlsx::read.xlsx("../results/table_parameters_irt.xlsx")
+parstab_bare <- openxlsx::read.xlsx("../results/table_parameters_bare.xlsx")
 ```
 
 ```{r irtpartab}
