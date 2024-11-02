@@ -144,7 +144,9 @@ dev.off()
 p_bare <- df_bareground %>% 
   ggplot(aes(period, barecover)) + 
   geom_rain(rain.side = 'f1x1', 
-            id.long.var = "village", fill = "grey20", alpha = 0.2
+            id.long.var = "village", 
+            fill = gradcolors[3], 
+            alpha = 0.25
   ) + 
   theme_bw(14) +
   theme(
@@ -172,7 +174,10 @@ p_bare <- df_bareground %>%
 # ... rainfall
 p_rain <- df_rainfall %>% 
   ggplot(aes(1, rainfall)) + 
-  geom_rain(fill = "grey20", alpha = 0.2) +
+  geom_rain(
+    fill = gradcolors[3], 
+    alpha = 0.25,
+  ) +
   theme_bw(14) +
   theme(
     text = element_text(family = fontfam),
@@ -194,8 +199,8 @@ p_rain <- df_rainfall %>%
     max.overlaps = 6) 
 
 set.seed(12)
-png("results/plot_satellite.png", width = 2650, height = 1450, res = 265)
-p_bare + p_rain + plot_layout(widths = c(2,1)) + plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
+png("results/plot_satellite.png", width = 1850, height = 1450, res = 215)
+p_bare + p_rain + plot_layout(widths = c(5/3,1)) + plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
 dev.off()
 
 #######################
