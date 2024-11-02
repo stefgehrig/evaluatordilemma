@@ -79,7 +79,7 @@ name_the_tiers <- function(data){
   
 }
 
-# helper function for radar plots, adapted from:
+# helper functions for radar plots, adapted from:
 # https://stackoverflow.com/questions/67334137/increase-space-for-long-axis-labels-in-radar-chart
 coord_radar2 <- function(theta = "x", start = 0, direction = 1, clip = "off") {
   theta <- match.arg(theta, c("x", "y"))

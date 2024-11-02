@@ -79,8 +79,20 @@ input_spec <- expand_grid(
   tier1 = unique(d_radar$tier1)) %>% 
   arrange(village, desc(tier1))
 
+n_items_outcome <- sum(grepl("Outcomes", table_items$tier1))
+n_items_others  <- sum(!grepl("Outcomes", table_items$tier1))
+
 radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                    function(x){
+
+                     polar_ticks <- tibble(
+                       z = c(1:(if(grepl("Outcomes", x$tier1)) n_items_outcome else n_items_others), 1),
+                       y1 = rep(1, if(grepl("Outcomes", x$tier1)) (n_items_outcome+1) else (n_items_others+1)),
+                       y2 = rep(2, if(grepl("Outcomes", x$tier1)) (n_items_outcome+1) else (n_items_others+1)),
+                       y3 = rep(3, if(grepl("Outcomes", x$tier1)) (n_items_outcome+1) else (n_items_others+1)),
+                       tier1 = x$tier1
+                     )
+                     
                      d_radar %>%
                        filter(village == x$village,
                               tier1 == x$tier1) %>%
@@ -89,13 +101,13 @@ radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                        ggRadar2(aes(facet = tier1),
                                 rescale = FALSE,
                                 alpha = 0.2,
-                                size = 3/4,
+                                size = 2,
                                 clip = "off") +
                        theme_minimal(14) +
                        theme(
                          text = element_text(family = fontfam),
                          axis.text.y = element_blank(),
-                         axis.text.x = element_text(size = 10),
+                         axis.text.x = element_text(size = 9),
                          panel.grid.minor = element_blank(),
                          panel.grid.major.y = element_blank(),
                          strip.text = element_text(size= 10),
@@ -103,23 +115,25 @@ radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                          legend.position = "none",
                        ) +
                        scale_y_continuous(
-                         limits = c(1, 3),
-                         breaks = c(1, 2, 3),
-                         expand = c(0, 0)
+                         limits = c(0.9, 3),
+                         expand = c(0, 0.4)
                        ) +
                        labs(subtitle = if(grepl("Outcomes", x$tier1)) "" else x$village)  + 
-                       scale_colour_manual(values = c("grey20"))+ 
-                       scale_fill_manual(values =   c("grey20"))
+                       scale_colour_manual(values = gradcolors[3]) + 
+                       scale_fill_manual(values = gradcolors[3]) + 
+                       geom_path(data = polar_ticks, aes(x = z, y = y1), col = "black", alpha = 0.25)+ 
+                       geom_path(data = polar_ticks, aes(x = z, y = y2), col = "black", alpha = 0.25)+ 
+                       geom_path(data = polar_ticks, aes(x = z, y = y3), col = "black", alpha = 0.25)
                    })
 
 theme_border <- theme_gray() + 
   theme(plot.background = element_rect(fill = NA, colour = 'black', linewidth = 0.5))
 
-wrapped_radars <- map(split(1:24, rep(1:12, each = 2)), function(x){
+wrapped_radars <- map(split(1:length(radarplots), rep(1:(length(radarplots)/2), each = 2)), function(x){
   wrap_elements(radarplots[[x[1]]] + radarplots[[x[2]]] + plot_annotation(theme = theme_border))
 })
 
-png("results/plot_radar.png", width = 3075, height = 3050, res = 200)
+png("results/plot_radar.png", width = 3100, height = 3000, res = 200)
 wrap_plots(wrapped_radars,
            ncol = 3,
            nrow = 4)
