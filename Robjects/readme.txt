@@ -1,0 +1,1 @@
+This folder is used by `compute_results.R` as a destination to export fitted model objects.
