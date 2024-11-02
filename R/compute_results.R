@@ -5,12 +5,13 @@
 library(tidyverse)
 library(glue)
 library(openxlsx)
-library(ggradar2)
 library(ggrain)
 library(ggrepel)
 library(patchwork)
+library(paletteer)
 library(brms)
 library(tidybayes)
+library(coda)
 library(bayesplot)
 library(ggtext)
 
@@ -20,7 +21,6 @@ source("R/functions.R")
 # plotting config
 extrafont::loadfonts(quiet = TRUE)
 fontfam <- "Segoe UI"
-palcolors <- colorRampPalette(RColorBrewer::brewer.pal(12, "Set3"))(12)
 gradcolors <- c("#bdc9e1", "#67a9cf", "#02818a")
 
 #################################
@@ -101,13 +101,13 @@ radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                        ggRadar2(aes(facet = tier1),
                                 rescale = FALSE,
                                 alpha = 0.2,
-                                size = 2,
+                                size = 1.5,
                                 clip = "off") +
                        theme_minimal(14) +
                        theme(
                          text = element_text(family = fontfam),
                          axis.text.y = element_blank(),
-                         axis.text.x = element_text(size = 9),
+                         axis.text.x = element_text(size = 8),
                          panel.grid.minor = element_blank(),
                          panel.grid.major.y = element_blank(),
                          strip.text = element_text(size= 10),
@@ -119,8 +119,8 @@ radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                          expand = c(0, 0.4)
                        ) +
                        labs(subtitle = if(grepl("Outcomes", x$tier1)) "" else x$village)  + 
-                       scale_colour_manual(values = gradcolors[3]) + 
-                       scale_fill_manual(values = gradcolors[3]) + 
+                       scale_colour_manual(values = "black") + 
+                       scale_fill_manual(values = "black") + 
                        geom_path(data = polar_ticks, aes(x = z, y = y1), col = "black", alpha = 0.25)+ 
                        geom_path(data = polar_ticks, aes(x = z, y = y2), col = "black", alpha = 0.25)+ 
                        geom_path(data = polar_ticks, aes(x = z, y = y3), col = "black", alpha = 0.25)
@@ -133,7 +133,7 @@ wrapped_radars <- map(split(1:length(radarplots), rep(1:(length(radarplots)/2), 
   wrap_elements(radarplots[[x[1]]] + radarplots[[x[2]]] + plot_annotation(theme = theme_border))
 })
 
-png("results/plot_radar.png", width = 3000, height = 3000, res = 200)
+png("results/plot_radar.png", width = 3000, height = 3000, res = 215)
 wrap_plots(wrapped_radars,
            ncol = 3,
            nrow = 4)
@@ -145,18 +145,20 @@ p_bare <- df_bareground %>%
   ggplot(aes(period, barecover)) + 
   geom_rain(rain.side = 'f1x1', 
             id.long.var = "village", 
-            fill = gradcolors[3], 
-            alpha = 0.25
+            fill = "black", 
+            alpha = 0.2
   ) + 
   theme_bw(14) +
   theme(
     text = element_text(family = fontfam),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
-    panel.grid.minor.y = element_blank()
+    panel.grid.minor.y = element_blank(),
+    plot.caption = element_text(family = fontfam, size= 9)
   ) +
   labs(x = "Period",
-       y = "Bare ground area cover\n(Proportion of total area)") + 
+       caption = "*Bare ground area cover as proportion of total area\n(period indicated by the subscript)",
+       y = expression('Bare'['pre']*''^'*')) + 
   geom_text_repel(
     data = df_bareground %>% filter(period == "Pre"),
     aes(x = period, 
@@ -169,14 +171,15 @@ p_bare <- df_bareground %>%
     box.padding = 0.02,
     max.overlaps = 10) +
   scale_y_continuous(trans = "logit", breaks = seq(0.1,0.5,0.1),
-                     limits = c(0.1, 0.5))
+                     limits = c(0.1, 0.5),
+                     sec.axis = sec_axis(~., name=expression('Bare'['post']*''^'*')))
 
 # ... rainfall
 p_rain <- df_rainfall %>% 
   ggplot(aes(1, rainfall)) + 
   geom_rain(
-    fill = gradcolors[3], 
-    alpha = 0.25,
+    fill = "black", 
+    alpha = 0.2,
   ) +
   theme_bw(14) +
   theme(
@@ -184,9 +187,12 @@ p_rain <- df_rainfall %>%
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
     axis.title.x = element_blank(), 
-    axis.text.x = element_blank(), axis.ticks.x = element_blank()
+    axis.text.x = element_blank(), 
+    axis.ticks.x = element_blank(),
+    plot.caption = element_text(family = fontfam, size= 9)
   ) +
-  labs(y = "Mean annual precipitation (mm)")+ 
+  labs(caption = "*Mean annual precipitation in mm",
+       y = expression('Rainfall'*''^'*')) + 
   geom_text_repel(
     aes(x = 1, 
         y = rainfall, 
@@ -199,7 +205,7 @@ p_rain <- df_rainfall %>%
     max.overlaps = 6) 
 
 set.seed(12)
-png("results/plot_satellite.png", width = 1850, height = 1450, res = 215)
+png("results/plot_satellite.png", width = 2000, height = 1450, res = 215)
 p_bare + p_rain + plot_layout(widths = c(5/3,1)) + plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
 dev.off()
 
@@ -214,12 +220,12 @@ df_model <- df_codescores %>%
 # model config
 family <- brmsfamily("cumulative", "logit")
 priors <-
-  prior("constant(1)",     class = "sd", group = "village") + # identifiability restriction
-  prior("exponential(2)",  class = "sd") + 
-  prior("exponential(2)",  class = "sd", dpar = "disc") + 
-  prior("normal(0,1)",     class = "Intercept", dpar = "disc") + # this is also the default
-  prior("normal(0,3)",     class = "Intercept") +
-  prior("normal(0,3)",     class = "b") # instead of default improper flat prior
+  prior("constant(1)",    class = "sd", group = "village") + # identifiability restriction
+  prior("exponential(2)", class = "sd") + 
+  prior("exponential(2)", class = "sd", dpar = "disc") + 
+  prior("normal(0,1)",    class = "Intercept", dpar = "disc") + # this is also the default
+  prior("normal(0,3)",    class = "Intercept") +
+  prior("normal(0,3)",    class = "b") # instead of default improper flat prior
 formula <- bf(
   score ~ 1 + (1 |i| tier3) + (0 + itemtype | village) + district,
   disc  ~ 1 + (1 |i| tier3))
@@ -230,7 +236,7 @@ fit_irt <- brm(
   data = df_model,
   family = family,
   prior = priors,
-  control   = list(adapt_delta = 0.99),
+  control   = list(adapt_delta = 0.995),
   warmup    = 2e3,
   iter      = 6e3,
   chains    = 5,
@@ -291,10 +297,10 @@ df_model2 <- df_bareground %>%
 
 # priors
 prior_bare <-
-  prior("normal(0,5)",     class = "Intercept", resp = "Post") +
-  prior("normal(0,5)",     class = "b",         resp = "Post") +
-  prior("exponential(1)",  class = "sigma",     resp = "Post") +
-  prior("constant(1)",     class = "sigma",     resp = "govpostmean")
+  prior("normal(0,3)",    class = "Intercept", resp = "Post") +
+  prior("normal(0,3)",    class = "b",         resp = "Post") +
+  prior("exponential(1)", class = "sigma",     resp = "Post") +
+  prior("constant(1)",    class = "sigma",     resp = "govpostmean")
 
 # double model (due to measurement error)
 formula_bare1 <- bf(Post ~ mi(govpostmean) + Pre + rainfall_std + invasive) + gaussian(identity)
@@ -305,7 +311,7 @@ fit_bare <- brm(
   formula   = formula_bare1 + formula_bare2 + set_rescor(FALSE),
   data      = df_model2,
   prior     = prior_bare,
-  control   = list(adapt_delta = 0.99),
+  control   = list(adapt_delta = 0.995),
   warmup    = 2e3,
   iter      = 6e3,
   chains    = 5,
@@ -580,65 +586,142 @@ df_preds_bare_grp <- df_preds_bare %>%
   group_by(x) %>% 
   summarise(
     mean = mean(y),
-    lwr = quantile(y, 0.05),
-    upr = quantile(y, 0.95)
-  )
-
-p_pred <- df_preds_bare_grp %>% 
-  ggplot() + 
+    hpdi = list(as_tibble(HPDinterval(as.mcmc(y), prob = 0.9)))
+  ) %>% 
+  unnest(hpdi)
+  
+p_pred <- df_preds_bare_grp %>%
+  ggplot() +
   geom_hline(yintercept = 1, linetype = 2) +
-  geom_ribbon(aes(x = x, ymin = lwr, ymax = upr), alpha = 1/10) +
-  geom_line(aes(x = x, y = mean),
-            lwd = 1) +
+  geom_ribbon(aes(x = x, ymin = lower, ymax = upper),
+              alpha = 0.2,
+              fill = "black") +
+  geom_line(aes(x = x, y = mean), size = 1.25, col = "black") +
   theme_classic(14) +
-  theme(text = element_text(family = fontfam),
-        axis.title.x  = element_markdown()) + 
-  scale_color_manual(values = gradcolors) + 
-  scale_fill_manual(values =  gradcolors) + 
-  scale_y_continuous(breaks = seq(0.5,3, 0.5)) +
-  #scale_y_continuous(limits = c(0,3)) +
-  labs(y = "Factor change\nin bare ground cover",
-       x = "Governance processes (*&#952;<sup>Gov</sup>*)",
+  theme(text = element_text(family = fontfam), axis.title.x  = element_markdown(),
+        plot.margin = unit(c(1,0,0,0), "cm")) +
+  scale_y_continuous(breaks = seq(0.5, 3, 0.5)) +
+  labs(y = "Factor change\nin bare ground cover", 
+       x = "Governance processes (*&#952;<sup>Gov</sup>*)", 
        fill = "Response\ncategory")
 
 # plot correlation density
-p_cor1 <- mcmc_areas_ridges(fit_irt, pars = vars(contains("cor_village")),
-                            prob_outer = 1, prob = 0.9) + 
-  geom_vline(xintercept = 0, lty = 2, lwd = 1) + theme_classic(14) + 
-  theme(text = element_text(family = fontfam),
-        axis.title.x = element_markdown()) +
-  labs(x = "Correlation of governance processes<br>and governance outcomes (*&#961;<sub>Gov, Out</sub>*)",
-       y = "Posterior density")+ 
-  scale_y_discrete(
-    labels = "",
-    expand = c(0,0)
+cor_draws <- spread_draws(fit_irt,
+                          cor_village__itemtypeGovernance__itemtypeOutcome) %>% 
+  rename(y = cor_village__itemtypeGovernance__itemtypeOutcome)
+
+cor_hpdi <- cor_draws %>% 
+  summarise(
+    mean = mean(y),
+    hpdi = list(as_tibble(HPDinterval(as.mcmc(y), prob = 0.9)))
+  ) %>% 
+  unnest(hpdi)
+
+p_cor1 <- ggplot(cor_draws) +
+  geom_histogram(aes(x = y),
+                 bins = 50,
+                 fill = "black",
+                 alpha = 0.2) +
+  geom_vline(xintercept = 0, linetype = 2) +
+  theme_classic(14) +
+  theme(text = element_text(family = fontfam), axis.title.x = element_markdown()) +
+  labs(x = "Correlation of governance processes<br>and governance outcomes (*&#961;<sub>Gov, Out</sub>*)", y = "Posterior density") +
+  scale_y_discrete(labels = "", expand = c(0, 0)) +
+  geom_point(
+    data = cor_hpdi,
+    aes(y = 35, x = mean),
+    size = 3,
+    col = "black"
+  ) +
+  geom_errorbar(
+    data = cor_hpdi,
+    aes(y = 35, xmin = lower, xmax = upper),
+    size = 1.25,
+    width = 0,
+    col = "black"
   )
 
-# plot bivariate posteiror
-p_cor2 <- gather_draws(fit_irt, r_village[village, itemtype]) %>%
+# plot bivariate posterior
+bivar_draws <- gather_draws(fit_irt, r_village[village, itemtype]) %>%
   ungroup %>% 
-  pivot_wider(values_from = .value, names_from = itemtype) %>% 
-  ggplot(aes(x = itemtypeGovernance, y = itemtypeOutcome, 
-             color = village, group = village, fill = village)) +
-  geom_density_2d(lwd = 1, contour_var = "ndensity", breaks = c(0.1)) +
+  pivot_wider(values_from = .value, names_from = itemtype)%>% 
+  mutate(village = str_replace_all(village, "\\.", " "))
+
+p_cor2 <- bivar_draws %>%
+  ggplot(
+    aes(
+      x = itemtypeGovernance,
+      y = itemtypeOutcome,
+      color = village,
+      group = village,
+      fill = village
+    )
+  ) +
+  stat_ellipse(size = 1.25) +
+  # geom_density_2d(lwd = 1, contour_var = "ndensity", breaks = c(0.1)) + # alternative plot
   theme_classic(14) +
-  theme(text = element_text(family = fontfam),
-        axis.title.x  = element_markdown(),
-        axis.title.y  = element_markdown()) +
-  scale_color_manual(values = palcolors,
-                     labels = function(x) 
-                       str_replace_all(x, "\\.", " ")) + 
-  coord_cartesian(xlim = c(-3.25,3.25), ylim = c(-3.25,3.25)) + 
-  labs(x = "Governance processes (*&#952;<sup>Gov</sup>*)",
-       y = "Governance outcomes (*&#952;<sup>Out</sup>*)",
+  theme(
+    text = element_text(family = fontfam),
+    axis.title.x  = element_markdown(),
+    axis.title.y  = element_markdown(),
+    legend.position = "none"
+  ) +
+  scale_color_paletteer_d("rcartocolor::Vivid") +
+  coord_cartesian(xlim = c(-3.3, 3.3), ylim = c(-3.3, 3.3)) +
+  labs(x = "Governance processes (*&#952;<sup>Gov</sup>*)", 
+       y = "Governance outcomes (*&#952;<sup>Out</sup>*)", 
        color = "Village")
 
-p_lowerpanel <- p_pred
-p_middlepanel <- p_cor1 + p_cor2 
-p_upperpanel <- p_re1a + p_re1b
+# plot parameter estimates
+p_pars <- map(
+  c("itemtypeGovernance", "itemtypeOutcome"), function(v) {
+    bivar_draws %>%
+      group_by(village) %>%
+      summarise(mean = mean(!!as.symbol(v)),
+                hpdi = list(as_tibble(HPDinterval(
+                  as.mcmc(!!as.symbol(v)), prob = 0.9
+                )))) %>%
+      mutate(village = factor(village, ordered = TRUE, levels = rev(sort(
+        unique(bivar_draws$village)
+      )))) %>%
+      unnest(hpdi) %>%
+      ggplot() +
+      geom_vline(xintercept = 0, linetype = 2) +
+      geom_point(aes(y = village, x = mean, col = village), size = 3) +
+      geom_errorbar(
+        aes(
+          y = village,
+          xmin = lower,
+          xmax = upper,
+          col = village
+        ),
+        size = 1.25,
+        width = 0
+      ) +
+      scale_color_paletteer_d("rcartocolor::Vivid", direction = -1) +
+      theme_classic(14) +
+      labs(
+        y = "",
+        x = if (v == "itemtypeGovernance")
+          "Governance processes (*&#952;<sup>Gov</sup>)*"
+        else
+          "Governance outcomes (*&#952;<sup>Out</sup>*)"
+      ) +
+      theme(
+        text = element_text(family = fontfam),
+        axis.title.x = element_markdown(),
+        legend.position = "none"
+      )
+  }
+)
 
-png("results/plot_mainresults.png", width = 3500, height = 3500, res = 310)
-p_upperpanel / p_middlepanel / p_lowerpanel  & plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
+p_lowerpanel <- p_pred
+p_middlepanel <- p_cor2 + p_cor1 
+p_upperpanel <- p_pars[[1]] + p_pars[[2]]
+
+png("results/plot_mainresults.png", width = 3150, height = 3400, res = 350)
+p_upperpanel / free(p_middlepanel, type = "space") / free(p_lowerpanel, type = "label") & 
+  plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
 dev.off()
 
 #############################

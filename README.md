@@ -22,4 +22,4 @@ In the folder `/data/satellite_raw`, raw data from remote sensing sources and vi
 
 **Version info:**
 
-R session info (from `R/compute_results.R`) can be accessed <a href="sessionInfo.txt">here</a>. MCMC sampling was conducted via the `cmdstan` backend `v2.34.1`.
+R session info (from `R/compute_results.R`) can be accessed <a href="sessionInfo.txt">here</a>. MCMC sampling was conducted via the `cmdstan` backend `v2.35.0`.
