@@ -133,7 +133,7 @@ wrapped_radars <- map(split(1:length(radarplots), rep(1:(length(radarplots)/2), 
   wrap_elements(radarplots[[x[1]]] + radarplots[[x[2]]] + plot_annotation(theme = theme_border))
 })
 
-png("results/plot_radar.png", width = 3100, height = 3000, res = 200)
+png("results/plot_radar.png", width = 3000, height = 3000, res = 200)
 wrap_plots(wrapped_radars,
            ncol = 3,
            nrow = 4)
