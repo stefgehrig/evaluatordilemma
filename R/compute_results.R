@@ -191,7 +191,7 @@ p_rain <- df_rainfall %>%
     axis.ticks.x = element_blank(),
     plot.caption = element_text(family = fontfam, size= 9)
   ) +
-  labs(caption = "*Mean annual precipitation in mm",
+  labs(caption = "*Mean annual precipitation in mm\n(post period)",
        y = expression('Rainfall'*''^'*')) + 
   geom_text_repel(
     aes(x = 1, 
