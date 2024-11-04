@@ -66,7 +66,7 @@ name_the_tiers <- function(data){
       dimension == "i2.1.participation.in.social.monitoring.(enforcement)"  ~ "The users always participate in monitoring other people's grazing behaviors",
       dimension == "o1.1.compliance"                                        ~ "This user group almost always or always complies with formal rules",
       dimension == "o2.1.commons.condition.trend"                           ~ "Condition of the rangeland has improved",
-      dimension == "o2.3.invasives"                                         ~ "Invasive species do not pose a threat to this resource",
+      dimension == "o2.3.invasives"                                         ~ "The problem of invasive species has declined",
       dimension == "rs2.1.commons.boundaries"                               ~ "The limits of the rangeland are clearly defined and highly visible",
       dimension == "rs2.2.commons.boundary.negotiability"                   ~ "Negotiations to access this village rangeland by non-members are not possible or not fruitful"
     ))
