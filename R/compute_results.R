@@ -724,6 +724,55 @@ p_upperpanel / free(p_middlepanel, type = "space") / free(p_lowerpanel, type = "
   plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
 dev.off()
 
+#######################################################
+#### plot comparison of raw data on commons trends ####
+#######################################################
+df_out_obj <- df_bareground %>% 
+  mutate(logit_barecover = qlogis(barecover)) %>% 
+  group_by(village) %>% 
+  summarise(
+    delta_logit_bare = logit_barecover[period == "Post"] - logit_barecover[period == "Pre"]
+  )
+
+df_out_subj <- df_codescores %>% 
+  filter(tier3 == "O2.1: Commons condition trend") %>% 
+  select(
+    village,
+    commons_trend_score = score
+  )
+
+df_out <- left_join(
+  df_out_obj,
+  df_out_subj,
+  by = join_by(village)
+)
+
+p_out <- df_out %>% 
+  ggplot(aes(x = commons_trend_score,
+             y = delta_logit_bare)) + 
+  geom_rain(fill = "black", 
+            alpha = 0.2
+  ) + 
+  theme_bw(14) +
+  theme(text = element_text(family = fontfam), 
+        axis.title.y = element_markdown(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank()) +
+  labs(y = "logit(Bare<sub>post</sub>) - logit(Bare<sub>pre</sub>)", 
+       x = "O2.1: Commons condition trend") + 
+  geom_text_repel(
+    aes(label = village),
+    size = 3, 
+    family = fontfam, 
+    segment.color = NA,
+    hjust = 1.3)
+
+
+png("results/plot_raw_outcometrend.png", width = 1700, height = 1400, res = 235)
+p_out
+dev.off()
+
 #############################
 #### export session info ####
 #############################
