@@ -767,7 +767,7 @@ p_out <- df_out %>%
     segment.color = NA,
     hjust = 1.5)
 
-png("results/plot_raw_outcometrend.png", width = 1600, height = 1600, res = 260)
+png("results/plot_raw_outcometrend.png", width = 1600, height = 1600, res = 275)
 p_out
 dev.off()
 
