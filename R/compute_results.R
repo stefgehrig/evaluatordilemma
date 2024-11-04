@@ -750,9 +750,8 @@ df_out <- left_join(
 p_out <- df_out %>% 
   ggplot(aes(x = commons_trend_score,
              y = delta_logit_bare)) + 
-  geom_rain(fill = "black", 
-            alpha = 0.2
-  ) + 
+  geom_point(size = 3,
+             alpha = 0.5) + 
   theme_bw(14) +
   theme(text = element_text(family = fontfam), 
         axis.title.y = element_markdown(),
@@ -760,16 +759,15 @@ p_out <- df_out %>%
         panel.grid.minor.x = element_blank(),
         panel.grid.minor.y = element_blank()) +
   labs(y = "logit(Bare<sub>post</sub>) - logit(Bare<sub>pre</sub>)", 
-       x = "O2.1: Commons condition trend") + 
+       x = expression(italic("O2.1: Commons condition trend"))) + 
   geom_text_repel(
     aes(label = village),
     size = 3, 
     family = fontfam, 
     segment.color = NA,
-    hjust = 1.3)
+    hjust = 1.5)
 
-
-png("results/plot_raw_outcometrend.png", width = 1700, height = 1400, res = 235)
+png("results/plot_raw_outcometrend.png", width = 1600, height = 1600, res = 260)
 p_out
 dev.off()
 
