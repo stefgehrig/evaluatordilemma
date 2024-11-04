@@ -68,7 +68,7 @@ name_the_tiers <- function(data){
       dimension == "o2.1.commons.condition.trend"                           ~ "Condition of the rangeland has improved",
       dimension == "o2.3.invasives"                                         ~ "Invasive species do not pose a threat to this resource",
       dimension == "rs2.1.commons.boundaries"                               ~ "The limits of the rangeland are clearly defined and highly visible",
-      dimension == "rs2.2.commons.boundary.negotiability"                   ~ "Negotiations to access this village rangeland by non-members are not possible or not fruitful",
+      dimension == "rs2.2.commons.boundary.negotiability"                   ~ "Negotiations to access this village rangeland by non-members are not possible or not fruitful"
     ))
   
   # check data
