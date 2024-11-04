@@ -60,7 +60,7 @@ name_the_tiers <- function(data){
       dimension == "gs5.5.commons.political.power"                          ~ "User or leadership group with high levels of power have the ability to change rules on their own",
       dimension == "gs6.2.outsider.exclusion"                               ~ "Users are able to prevent the great majority to all incursion by outsiders",
       dimension == "gs7.1.environmental.monitoring"                         ~ "The group engages in frequent and systematic monitoring efforts to observe changes in rangeland's conditions.",
-      dimension == "gs7.2.self.sanctions"                                   ~ "Sanctions are applied by and to the members of the group for violations of extraction rules",
+      dimension == "gs7.2.self.sanctions"                                   ~ "Graduated sanctions are applied by and to the members of the group for violations of extraction rules",
       dimension == "gs7.3.external.sanctions"                               ~ "Sanctions are applied by other actor groups (i.e., external authority) to the members of the group for violations of extraction rules",
       dimension == "i1.1.conflict.resolution"                               ~ "Mechanisms are in place to address conflicts that arise over the use of the rangeland by the user group",
       dimension == "i2.1.participation.in.social.monitoring.(enforcement)"  ~ "The users always participate in monitoring other people's grazing behaviors",
