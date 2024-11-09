@@ -571,7 +571,7 @@ dg <- marginaleffects::datagrid(model = fit_bare,
                                 govpostsd = median(fit_bare$data$govpostsd),
                                 FUN_numeric = median)
 
-preds_bare <- posterior_predict(
+preds_bare <- posterior_epred(
   object = fit_bare,
   resp = "Post",
   newdata = dg)
@@ -601,7 +601,7 @@ p_pred <- df_preds_bare_grp %>%
   theme(text = element_text(family = fontfam), axis.title.x  = element_markdown(),
         plot.margin = unit(c(1,0,0,0), "cm")) +
   scale_y_continuous(breaks = seq(0.5, 3, 0.5)) +
-  labs(y = "Factor change\nin bare ground cover", 
+  labs(y = "Expected factor change\nin bare ground cover", 
        x = "Governance processes (*&#952;<sup>Gov</sup>*)", 
        fill = "Response\ncategory")
 
@@ -619,7 +619,7 @@ cor_hpdi <- cor_draws %>%
 
 p_cor1 <- ggplot(cor_draws) +
   geom_histogram(aes(x = y),
-                 bins = 50,
+                 bins = 40,
                  fill = "black",
                  alpha = 0.2) +
   geom_vline(xintercept = 0, linetype = 2) +
