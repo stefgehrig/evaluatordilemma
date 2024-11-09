@@ -7,26 +7,26 @@ library(ggdag)
 extrafont::loadfonts(quiet = TRUE)
 fontfam <- "Segoe UI"
 onecolor_target <- "#67a9cf"
-onecolor_nuisance <- "grey70"
+onecolor_nuisance <- "grey75"
 onecolor_addition <- "#fc9272"
 
 ##############
 #### DAG 1 ###
 ##############
-dag <- dagify(gov ~ u1 + u2 + u3a + usaid + distr,
-              out ~ u0 + u2 + u3b + usaid + gov + distr,
-              sel ~ u3a + u3b + usaid + out + distr,
+dag <- dagify(gov ~ u1 + u2 + u3 + usaid + distr,
+              out ~ u0 + u2 + u4 + usaid + gov + distr,
+              sel ~ u3 + u4 + usaid + out + distr,
               usaid ~ u0 + u1,
               exposure = "gov",
               outcome = "out",
-              latent = c("u0", "u1","u2","u3a","u3b"),
+              latent = c("u0", "u1","u2","u3","u4"),
               coords = list(
                 
-                x = c(usaid = 1, u1 = 2, u3a = 2.5, u0 = 3, gov = 3, distr = 3, sel = 3,
-                      u2 = 4, out = 5, u3b = 4.5),
+                x = c(usaid = 1, u1 = 2, u3 = 2.5, u0 = 3, gov = 3, distr = 3, sel = 3,
+                      u2 = 4, out = 5, u4 = 4.5),
                 
                 y = c(u0 = 5, u1 = 4, u2 = 4, usaid = 3, gov = 3, out = 3,
-                      u3a = 2, distr = 1.5, sel = 0.5, u3b = 0.75))
+                      u3 = 2, distr = 1.5, sel = 0.5, u4 = 0.75))
 )
 
 df_dag1 <- dag %>% 
@@ -34,7 +34,7 @@ df_dag1 <- dag %>%
   arrange(name) %>% # sort them alphabetically
   mutate(type = 
            case_when(
-             name %in% c("u0", "u1", "u2", "u3a", "u3b") ~ "unobserved",
+             name %in% c("u0", "u1", "u2", "u3", "u4") ~ "unobserved",
              name %in% c("out", "gov") ~ "target",
              name %in% c("usaid", "sel") ~ "select",
              name %in% c("distr") ~ "observed"
@@ -89,8 +89,8 @@ p_dag1 <- ggplot() +
               u0    = expression(italic(U[0])),
               u1    = expression(italic(U[1])),
               u2    = expression(italic(U[2])^"*"),
-              u3a   = expression(italic(U[3*a])),
-              u3b   = expression(italic(U[3*b])),
+              u3   = expression(italic(U[3])),
+              u4   = expression(italic(U[4])^"*"),
               usaid = expression(atop("USAID-", "EENT"))
     ),
     parse = TRUE,
@@ -124,21 +124,19 @@ p_dag1 <- ggplot() +
         plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) + 
   coord_cartesian(clip = "off")
 
-p_dag1
-
 ##############
 #### DAG 2 ###
 ##############
-dag2 <- dagify(gov ~ u2 + u3a + distr + barepre + rain,
-               barepost ~ u2 + u3b + gov + distr + barepre + rain + inv,
-               sel ~ u3a + u3b + barepost + distr,
+dag2 <- dagify(gov ~ u2 + u3 + distr + barepre + rain,
+               barepost ~ u2 + u4 + gov + distr + barepre + rain + inv,
+               sel ~ u3 + u4 + barepost + distr,
                inv ~ gov,
                exposure = "gov",
                outcome = "barepost",
-               latent = c("u2","u3a","u3b"),
+               latent = c("u2","u3","u4"),
                coords = list(
-                 x = c(u3a = 2.5,gov = 3,distr = 3,sel = 3,u2 = 4,barepost = 5,u3b = 4.5,inv = 4,barepre = 4,rain = 4),
-                 y = c(u2 = 4,gov = 3,barepost = 3,sel = 0.5,u3a = 2,distr = 1.5,u3b = 0.75,inv = 2.5,barepre = 4.5,rain = 5)
+                 x = c(u3 = 2.5,gov = 3,distr = 3,sel = 3,u2 = 4,barepost = 5,u4 = 4.5,inv = 4,barepre = 4,rain = 4),
+                 y = c(u2 = 4,gov = 3,barepost = 3,sel = 0.5,u3 = 2,distr = 1.5,u4 = 0.75,inv = 2.5,barepre = 4.5,rain = 5)
                )
 )
 
@@ -147,7 +145,7 @@ df_dag2 <- dag2 %>%
   arrange(name) %>% # sort them alphabetically
   mutate(type = 
            case_when(
-             name %in% c("u2", "u3a", "u3b") ~ "unobserved",
+             name %in% c("u2", "u3", "u4") ~ "unobserved",
              name %in% c("barepost", "gov") ~ "target",
              name %in% c("sel") ~ "select",
              name %in% c("distr", "rain", "inv", "barepre") ~ "observed"
@@ -192,8 +190,8 @@ p_dag2 <- ggplot() +
       rain  = expression('Rainfall'),
       sel   = expression(atop("Sample", "selection")),
       u2    = expression(italic(U[2])^"§"),
-      u3a   = expression(italic(U[3*a])),
-      u3b   = expression(italic(U[3*b]))
+      u3   = expression(italic(U[3])),
+      u4   = expression(italic(U[4])^"§")
     ),
     parse = TRUE,
     show.legend = FALSE,
@@ -214,6 +212,11 @@ p_dag2 <- ggplot() +
   theme(text = element_text(family = fontfam),
         plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) +
   coord_cartesian(clip = "off")
+
+##############
+#### DAG 3 ###
+##############
+# ...
 
 png("results/plot_dags.png", width = 3100, height = 1600, res = 290)
 p_dag1 + p_dag2 + plot_annotation(tag_level = "a") & theme(text = element_text(family = fontfam))
