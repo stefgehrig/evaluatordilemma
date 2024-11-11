@@ -551,8 +551,8 @@ icc_plots <- map(outcome_items, function(icc_item){
     scale_fill_manual(values = gradcolors) + 
     labs(y = paste0("Expected response probability for item<br>", "*", icc_item, "*"),
          x = "Governance outcomes (*&#952;<sup>Out</sup>*)",
-         col = "Response\ncategory",
-         fill = "Response\ncategory")
+         col = "Score",
+         fill = "Score")
   
   return(p_icc1)
   
