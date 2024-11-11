@@ -89,7 +89,7 @@ p_dag1 <- ggplot() +
               u0    = expression(italic(U[0])),
               u1    = expression(italic(U[1])),
               u2    = expression(italic(U[2])^"*"),
-              u3   = expression(italic(U[3])),
+              u3   = expression(italic(U[3])^"*"),
               u4   = expression(italic(U[4])^"*"),
               usaid = expression(atop("USAID-", "EENT"))
     ),
@@ -107,7 +107,6 @@ p_dag1 <- ggplot() +
       x = x),
     curvature = c(0.275,-0.275, 0.04),
     edge_width = 1/2) +
-  
   geom_dag_edges_link(
     data = df_dag1_straight,
     mapping = aes(
@@ -119,7 +118,7 @@ p_dag1 <- ggplot() +
     edge_width = 1/2) +
   scale_color_manual(values = c(onecolor_target, "black", onecolor_nuisance)) + 
   scale_shape_manual(values = c(NA, 0, NA, 1)) + 
-  scale_size_manual(values = c(20, 21)) + 
+  scale_size_manual(values = c(16, 21)) + 
   theme(text = element_text(family = fontfam),
         plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) + 
   coord_cartesian(clip = "off")
@@ -190,7 +189,7 @@ p_dag2 <- ggplot() +
       rain  = expression('Rainfall'),
       sel   = expression(atop("Sample", "selection")),
       u2    = expression(italic(U[2])^"§"),
-      u3   = expression(italic(U[3])),
+      u3   = expression(italic(U[3])^"§"),
       u4   = expression(italic(U[4])^"§")
     ),
     parse = TRUE,
@@ -208,7 +207,7 @@ p_dag2 <- ggplot() +
     edge_width = 1/2) +
   scale_color_manual(values = c(onecolor_target,  onecolor_addition, "black")) +
   scale_shape_manual(values = c(NA, 0, NA, 1)) +
-  scale_size_manual(values = c(20, 21)) +
+  scale_size_manual(values = c(16, 21)) +
   theme(text = element_text(family = fontfam),
         plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) +
   coord_cartesian(clip = "off")
@@ -216,8 +215,166 @@ p_dag2 <- ggplot() +
 ##############
 #### DAG 3 ###
 ##############
-# ...
+dag3 <- dagify(y1   ~ gov,
+               y2   ~ gov,
+               pp   ~ gov,
+               y18  ~ gov,
+               y19  ~ gov,
+               y20  ~ out,
+               y21  ~ out,
+               y22  ~ out,
+               coords = list(
+                 x = c(gov = 2, out = 2, y1 = 1, y2 = 1.5, pp = 2, y18 = 2.5, y19 = 3, y20 = 1, y21 = 2, y22 = 3),
+                 y = c(gov = 1, out = 0, y1 = 1.5, y2 = 1.5, pp = 1.5, y18 = 1.5, y19 = 1.5, y20 = 0.5, y21 = 0.5, y22 = 0.5)
+                 )
+)
 
-png("results/plot_dags.png", width = 3100, height = 1600, res = 290)
+df_dag3 <- dag3 %>% 
+  tidy_dagitty(layout = "auto") %>%
+  mutate(
+    interest_node = case_when(
+      name %in% c("gov", "out") ~ onecolor_target,
+      TRUE ~ "black")
+  ) %>%  
+  arrange(name) # sort them alphabetically
+
+p_dag3 <- ggplot() + 
+  theme_dag_blank() +
+  geom_dag_point(
+    data = df_dag3,
+    mapping = aes(
+      x = x,
+      y = y,
+      color = interest_node,
+      shape = NA
+    ),
+    show.legend = FALSE
+  ) +
+  geom_dag_text(
+    data = df_dag3,
+    aes(x = x,
+        y = y,
+        color = interest_node),
+    # sort them alphabetically
+    label = c(
+      gov = expression(theta^'Gov'),
+      out = expression(theta^'Out'),
+      pp  = "...",
+      y1  = expression(italic(Y[1])),
+      y18  = expression(italic(Y[18])),
+      y19 = expression(italic(Y[19])),
+      y2  = expression(italic(Y[2])),
+      y20 = expression(italic(Y[20])),
+      y21 = expression(italic(Y[21])),
+      y22 = expression(italic(Y[22]))
+    ),
+    parse = TRUE,
+    show.legend = FALSE,
+    family = fontfam
+  ) +
+  geom_dag_edges_link(
+    data = df_dag3,
+    mapping = aes(
+      xend = xend,
+      yend = yend,
+      y = y,
+      x = x),
+    edge_width = 1/2) +
+  scale_color_manual(values = c(onecolor_target, "black")) +
+  theme(text = element_text(family = fontfam),
+        plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) +
+  coord_cartesian(clip = "off")
+
+# full version
+png("results/plot_dags.png", width = 3900, height = 1700, res = 340)
+p_dag1 + p_dag2 +  p_dag3 + plot_annotation(tag_level = "a") +
+  plot_layout(widths = c(2.5,2.5,1)) & theme(text = element_text(family = fontfam))
+dev.off()
+
+# shortened version without panel c
+png("results/plot_dags_short.png", width = 3200, height = 1700, res = 320)
 p_dag1 + p_dag2 + plot_annotation(tag_level = "a") & theme(text = element_text(family = fontfam))
 dev.off()
+
+######################
+#### collider DAG ####
+######################
+dag4a <- dagify(gov ~ distr,
+               out ~ gov,
+               sel ~ out + distr,
+               exposure = "gov",
+               outcome = "out",
+               coords = list(
+                 x = c(gov = 3,distr = 3,sel = 3, out = 5),
+                 y = c(gov = 3, out = 3,sel = 0.5,distr = 1.5)
+               )
+)
+
+df_dag4 <- dag4 %>% 
+  tidy_dagitty(layout = "auto") %>%
+  arrange(name) %>% # sort them alphabetically
+  mutate(type = 
+           case_when(
+             name %in% c("out", "gov") ~ "target",
+             name %in% c("sel") ~ "select",
+             name %in% c("distr") ~ "observed"
+           )) %>% 
+  mutate(
+    interest_edge = case_when(
+      to == "out" & name == "gov" ~ onecolor_target,
+      TRUE ~ "black"),
+    interest_node = case_when(
+      name %in% c("gov", "out") ~ onecolor_target,
+      TRUE ~ "black")
+  ) 
+
+p_dag4 <- ggplot() + 
+  theme_dag_blank() +
+  geom_dag_point(
+    data = df_dag4,
+    mapping = aes(
+      x = x,
+      y = y,
+      shape = type,
+      color = interest_node,
+      size = type == "select"
+    ),
+    show.legend = FALSE
+  ) +
+  geom_dag_text(
+    data = df_dag4,
+    aes(x = x,
+        y = y,
+        color = interest_node),
+    # sort them alphabetically
+    label = c(
+      distr = expression("District"),
+      gov   = expression(theta^'Gov'),
+      out   = "Outcome",
+      sel   = expression(atop("Sample", "selection"))
+    ),
+    parse = TRUE,
+    show.legend = FALSE,
+    family = fontfam
+  ) +
+  geom_dag_edges_link(
+    data = df_dag4,
+    mapping = aes(
+      edge_color = interest_edge,
+      xend = xend,
+      yend = yend,
+      y = y,
+      x = x),
+    edge_width = 1/2) +
+  scale_color_manual(values = c(onecolor_target, "black")) +
+  scale_shape_manual(values = c(NA, 0, NA, 1)) +
+  scale_size_manual(values = c(16, 21)) +
+  theme(text = element_text(family = fontfam),
+        plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) +
+  coord_cartesian(clip = "off")
+
+# shortened version without panel c
+png("results/plot_dag_collider.png", width = 1500, height = 1000, res = 280)
+p_dag4
+dev.off()
+
