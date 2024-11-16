@@ -771,6 +771,63 @@ png("results/plot_raw_outcometrend.png", width = 1600, height = 1600, res = 275)
 p_out
 dev.off()
 
+#################################################################
+#### plot supporting analyses for bare ground satellite data ####
+#################################################################
+# import additional satellite data sources
+df_bare_glad <- read.csv("data/satellite_supporting/glad_mod44_bgr_areas.csv")
+df_bare_rap  <- read.csv("data/satellite_supporting/rap_mod44_bgr_areas.csv")
+
+# GLAD bare ground vs MOD bare ground for study villages
+df_bare_glad <- df_bare_glad %>% 
+  mutate(
+    glad_bare = glad_bgr_area / glad_area,
+    modi_bare = mod_bgr_area / mod_area
+  )
+
+p_satellite1 <- df_bare_glad %>% 
+  ggplot() + 
+  geom_point(aes(x = glad_bare, y = modi_bare)) + 
+  theme_classic(14) +
+  theme(text = element_text(family = fontfam)) +
+  labs(y = "MOD44B bare ground cover (2010)", 
+       x = "GLAD bare ground cover (2010)") + 
+  geom_abline(aes(intercept = 0, slope = 1), linetype = 2) + 
+  scale_x_continuous(limits = c(0,0.5)) + 
+  scale_y_continuous(limits = c(0,0.5))
+
+with(df_bare_glad, cor(glad_bare, modi_bare)) # 0.9335193
+  
+# RAP bare ground vs MOD bare ground for random sample from US
+df_bare_rap <- df_bare_rap %>% 
+  mutate(
+    mod_percent_dif = (mod_bgr_post - mod_bgr_pre) / mod_bgr_pre * 100,
+    rap_percent_dif = (rap_bgr_post - rap_bgr_pre) / rap_bgr_pre * 100
+  ) %>% 
+  mutate(
+    mod_percent_dif = case_when(
+      mod_bgr_post == 0 & mod_bgr_pre == 0 ~ 0,
+      TRUE ~ mod_percent_dif
+    )
+  )
+
+p_satellite2 <- df_bare_rap %>% 
+  ggplot() + 
+  geom_point(aes(x = rap_percent_dif, 
+                 y = mod_percent_dif)) + 
+  theme_classic(14) +
+  theme(text = element_text(family = fontfam)) +
+  labs(y = "MOD44B change in bare ground cover (%)", 
+       x = "RAP change in bare ground cover (%)") + 
+  geom_abline(aes(intercept = 0, slope = 1), linetype = 2) 
+
+with(df_bare_rap, cor(rap_percent_dif, mod_percent_dif)) # 0.4140066
+mean(sign(df_bare_rap$mod_percent_dif) == sign(df_bare_rap$rap_percent_dif)) # 0.699
+
+png("results/plot_satellite_supporting.png", width = 2500, height = 1300, res = 260)
+p_satellite1 + p_satellite2 + plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
+dev.off()
+
 #############################
 #### export session info ####
 #############################
