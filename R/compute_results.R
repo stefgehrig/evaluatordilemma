@@ -158,7 +158,7 @@ p_bare <- df_bareground %>%
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
     panel.grid.minor.y = element_blank(),
-    plot.caption = element_text(family = fontfam, size= 9)
+    plot.caption = element_text(family = fontfam, size= 12)
   ) +
   labs(x = "Period",
        caption = "*Bare ground area cover as proportion of total area\n(period indicated by the subscript)",
@@ -168,7 +168,7 @@ p_bare <- df_bareground %>%
     aes(x = period, 
         y = barecover,
         label = village),
-    size = 3, 
+    size = 3.4, 
     family = fontfam, 
     hjust = -1/3,
     segment.color = NA,
@@ -193,7 +193,7 @@ p_rain <- df_rainfall %>%
     axis.title.x = element_blank(), 
     axis.text.x = element_blank(), 
     axis.ticks.x = element_blank(),
-    plot.caption = element_text(family = fontfam, size= 9)
+    plot.caption = element_text(family = fontfam, size= 12)
   ) +
   labs(caption = "*Mean annual precipitation in mm\n(post period)",
        y = expression('Rainfall'*''^'*')) + 
@@ -201,7 +201,7 @@ p_rain <- df_rainfall %>%
     aes(x = 1, 
         y = rainfall, 
         label = village),
-    size = 3, 
+    size = 3.4, 
     family = fontfam, 
     vjust = 0,
     segment.color = NA,
@@ -209,7 +209,7 @@ p_rain <- df_rainfall %>%
     max.overlaps = 6) 
 
 set.seed(12)
-png("results/plot_satellite.png", width = 2000, height = 1450, res = 215)
+png("results/plot_satellite.png", width = 2100, height = 1400, res = 220)
 p_bare + p_rain + plot_layout(widths = c(5/3,1)) + plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
 dev.off()
 
