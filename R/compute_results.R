@@ -92,8 +92,10 @@ radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                        y3 = rep(3, if(grepl("Outcomes", x$tier1)) (n_items_outcome+1) else (n_items_others+1)),
                        tier1 = x$tier1
                      )
-                     
+  
                      d_radar %>%
+                       rename_with(~ paste0("    ", .x), .cols = c("GS5.4", "RS2.2")) %>% 
+                       rename_with(~ paste0(.x, "    "), .cols = c("GS6.2")) %>% 
                        filter(village == x$village,
                               tier1 == x$tier1) %>%
                        discard(~all(is.na(.x))) %>%
@@ -107,10 +109,11 @@ radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                        theme(
                          text = element_text(family = fontfam),
                          axis.text.y = element_blank(),
-                         axis.text.x = element_text(size = 8),
+                         axis.text.x = element_text(size = 8.75, color = "black"),
                          panel.grid.minor = element_blank(),
                          panel.grid.major.y = element_blank(),
-                         strip.text = element_text(size= 10),
+                         strip.text = element_text(size = 11),
+                         plot.subtitle = element_text(size = 15),
                          plot.margin = unit(c(0,0,0,0), "cm"),
                          legend.position = "none",
                        ) +
@@ -124,6 +127,7 @@ radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                        geom_path(data = polar_ticks, aes(x = z, y = y1), col = "black", alpha = 0.25)+ 
                        geom_path(data = polar_ticks, aes(x = z, y = y2), col = "black", alpha = 0.25)+ 
                        geom_path(data = polar_ticks, aes(x = z, y = y3), col = "black", alpha = 0.25)
+
                    })
 
 theme_border <- theme_gray() + 
@@ -133,7 +137,7 @@ wrapped_radars <- map(split(1:length(radarplots), rep(1:(length(radarplots)/2), 
   wrap_elements(radarplots[[x[1]]] + radarplots[[x[2]]] + plot_annotation(theme = theme_border))
 })
 
-png("results/plot_radar.png", width = 3000, height = 3000, res = 215)
+png("results/plot_radar.png", width = 2750, height = 3000, res = 215)
 wrap_plots(wrapped_radars,
            ncol = 3,
            nrow = 4)
