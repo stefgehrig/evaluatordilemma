@@ -118,7 +118,7 @@ p_dag1 <- ggplot() +
       y = y,
       x = x),
     curvature = c(0.275,-0.275, 0.15),
-    edge_width = 1) +
+    edge_width = 0.9) +
   geom_dag_edges_link(
     data = df_dag1_straight,
     mapping = aes(
@@ -127,7 +127,7 @@ p_dag1 <- ggplot() +
       yend = yend+0.03,
       y = y,
       x = x),
-    edge_width = 1) +
+    edge_width = 0.9) +
   scale_color_manual(values = c(onecolor_target, "black", onecolor_nuisance)) + 
   scale_shape_manual(values = c(NA, 0, NA, 1)) + 
   scale_size_manual(values = c(16, 28)) + 
@@ -234,7 +234,7 @@ p_dag2 <- ggplot() +
       yend = yend+0.03,
       y = y,
       x = x),
-    edge_width = 1) +
+    edge_width = 0.9) +
   scale_color_manual(values = c(onecolor_target,  onecolor_addition, "black")) +
   scale_shape_manual(values = c(NA, 0, NA, 1)) +
   scale_size_manual(values = c(16, 28)) +
@@ -317,7 +317,7 @@ p_dag3 <- ggplot() +
       yend = yend,
       y = y,
       x = x),
-    edge_width = 1/2) +
+    edge_width = 0.9/2) +
   scale_color_manual(values = c(onecolor_target, "black")) +
   scale_shape_manual(values = c(NA, 0, NA, 1)) +
   scale_size_manual(values = c(16, 24)) +
