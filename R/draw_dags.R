@@ -320,7 +320,7 @@ p_dag3 <- ggplot() +
     edge_width = 1/2) +
   scale_color_manual(values = c(onecolor_target, "black")) +
   scale_shape_manual(values = c(NA, 0, NA, 1)) +
-  scale_size_manual(values = c(16, 28)) +
+  scale_size_manual(values = c(16, 24)) +
   theme(text = element_text(family = fontfam),
         plot.margin = unit(c(1,1,1,1), "cm")) +
   coord_cartesian(clip = "off")
