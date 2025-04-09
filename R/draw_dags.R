@@ -247,6 +247,88 @@ png("results/plot_dags.png", width = 3400, height = 1750, res = 325)
 p_dag1 + p_dag2 + plot_annotation(tag_level = "a") & theme(text = element_text(family = fontfam))
 dev.off()
 
+##############
+#### DAG 3 ###
+##############
+dag3 <- dagify(y1   ~ gov,
+               y2   ~ gov,
+               pp   ~ gov,
+               y18  ~ gov,
+               y19  ~ gov,
+               y20  ~ out,
+               y21  ~ out,
+               y22  ~ out,
+               coords = list(
+                 x = c(gov = 2, out = 2, y1 = 1, y2 = 1.5, pp = 2, y18 = 2.5, y19 = 3, y20 = 1, y21 = 2, y22 = 3),
+                 y = c(gov = 1, out = 0, y1 = 1.5, y2 = 1.5, pp = 1.5, y18 = 1.5, y19 = 1.5, y20 = 0.5, y21 = 0.5, y22 = 0.5)
+               )
+)
+
+
+df_dag3 <- dag3 %>% 
+  tidy_dagitty(layout = "auto") %>%
+  mutate(
+    interest_node = case_when(
+      name %in% c("gov", "out") ~ onecolor_target,
+      TRUE ~ "black")
+  ) %>%  
+  arrange(name) # sort them alphabetically
+
+
+p_dag3 <- ggplot() + 
+  theme_dag_blank() +
+  geom_dag_point(
+    data = df_dag3,
+    mapping = aes(
+      x = x,
+      y = y,
+      color = interest_node,
+      shape = NA
+    ),
+    show.legend = FALSE
+  ) +
+  geom_dag_text(
+    data = df_dag3,
+    aes(x = x,
+        y = y,
+        color = interest_node),
+    # sort them alphabetically
+    label = c(
+      gov = expression(theta^'Gov'),
+      out = expression(theta^'Out'),
+      pp  = "...",
+      y1  = expression(italic(Y[1])),
+      y18  = expression(italic(Y[18])),
+      y19 = expression(italic(Y[19])),
+      y2  = expression(italic(Y[2])),
+      y20 = expression(italic(Y[20])),
+      y21 = expression(italic(Y[21])),
+      y22 = expression(italic(Y[22]))
+    ),
+    size = 5,
+    parse = TRUE,
+    show.legend = FALSE,
+    family = fontfam
+  ) +
+  geom_dag_edges_link(
+    data = df_dag3,
+    mapping = aes(
+      xend = xend,
+      yend = yend,
+      y = y,
+      x = x),
+    edge_width = 0.9) +
+  scale_color_manual(values = c(onecolor_target, "black")) +
+  theme(text = element_text(family = fontfam),
+        plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) +
+  coord_cartesian(clip = "off")
+
+# export extended version for supplementary information
+png("results/plot_dags_extended.png", width = 3900, height = 1700, res = 340)
+p_dag1 + p_dag2 +  p_dag3 + plot_annotation(tag_level = "a") +
+  plot_layout(widths = c(2.5,2.5,1)) & theme(text = element_text(family = fontfam))
+dev.off()
+
 ######################
 #### collider DAG ####
 ######################
