@@ -161,7 +161,7 @@ p_bare <- df_bareground %>%
     plot.caption = element_text(family = fontfam, size= 12)
   ) +
   labs(x = "Period",
-       caption = "*Bare ground area cover as proportion of total area\n(period indicated by the subscript)",
+       caption = "*Bare ground area cover as proportion of total area\n(period indicated by subscript)",
        y = expression('Bare'['pre']*''^'*')) + 
   geom_text_repel(
     data = df_bareground %>% filter(period == "Pre"),
