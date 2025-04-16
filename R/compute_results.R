@@ -623,8 +623,8 @@ cor_hpdi <- cor_draws %>%
 
 p_cor1 <- ggplot(cor_draws) +
   geom_histogram(aes(x = y),
-                 bins = 40,
                  fill = "black",
+                 breaks = seq(-1,1,0.08),
                  alpha = 0.2) +
   geom_vline(xintercept = 0, linetype = 2) +
   theme_classic(14) +
