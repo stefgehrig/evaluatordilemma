@@ -5,7 +5,7 @@
 library(tidyverse)
 library(glue)
 library(openxlsx)
-library(ggrain)
+library(gghalves)
 library(ggrepel)
 library(patchwork)
 library(paletteer)
@@ -94,8 +94,12 @@ radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                      )
   
                      d_radar %>%
-                       rename_with(~ paste0("    ", .x), .cols = c("GS5.4", "RS2.2")) %>% 
-                       rename_with(~ paste0(.x, "    "), .cols = c("GS6.2")) %>% 
+                       rename_with(~ paste0(.x, " "), .cols = c("I2.1")) %>% 
+                       rename_with(~ paste0(" ", .x), .cols = c("GS5.3")) %>% 
+                       rename_with(~ paste0("      ", .x), .cols = c("GS5.4")) %>% 
+                       rename_with(~ paste0("    ", .x), .cols = c("RS2.2")) %>% 
+                       rename_with(~ paste0(.x, "   "), .cols = c("GS6.2")) %>% 
+                       rename_with(~ paste0("  ", .x), .cols = c("GS5.5")) %>% 
                        filter(village == x$village,
                               tier1 == x$tier1) %>%
                        discard(~all(is.na(.x))) %>%
@@ -103,25 +107,27 @@ radarplots <- map(split(input_spec, seq(nrow(input_spec))),
                        ggRadar2(aes(facet = tier1),
                                 rescale = FALSE,
                                 alpha = 0.2,
-                                size = 1.5,
+                                size = 2.5,
                                 clip = "off") +
                        theme_minimal(14) +
                        theme(
                          text = element_text(family = fontfam),
                          axis.text.y = element_blank(),
-                         axis.text.x = element_text(size = 8.75, color = "black"),
+                         axis.text.x = element_text(size = 15.5, color = "black"),
                          panel.grid.minor = element_blank(),
                          panel.grid.major.y = element_blank(),
-                         strip.text = element_text(size = 11),
-                         plot.subtitle = element_text(size = 15),
-                         plot.margin = unit(c(0,0,0,0), "cm"),
+                         plot.subtitle = element_text(size = 22),
+                         axis.ticks.length = unit(0, "cm"),
+                         strip.text = element_blank(),
+                         plot.margin = unit(c(0,0,0,0.2), "cm"),
                          legend.position = "none",
                        ) +
                        scale_y_continuous(
-                         limits = c(0.9, 3),
-                         expand = c(0, 0.4)
+                         limits = c(0.9, 3.05),
+                         expand = c(0,0.4)
                        ) +
-                       labs(subtitle = if(grepl("Outcomes", x$tier1)) "" else x$village)  + 
+                       labs(subtitle = if(grepl("Outcomes", x$tier1)) "" else x$village,
+                            x = NULL, y = NULL)  + 
                        scale_colour_manual(values = "black") + 
                        scale_fill_manual(values = "black") + 
                        geom_path(data = polar_ticks, aes(x = z, y = y1), col = "black", alpha = 0.25)+ 
@@ -137,7 +143,7 @@ wrapped_radars <- map(split(1:length(radarplots), rep(1:(length(radarplots)/2), 
   wrap_elements(radarplots[[x[1]]] + radarplots[[x[2]]] + plot_annotation(theme = theme_border))
 })
 
-png("results/plot_radar.png", width = 2750, height = 3000, res = 215)
+png("results/plot_radar.png", width = 3750, height = 3000, res = 195)
 wrap_plots(wrapped_radars,
            ncol = 3,
            nrow = 4)
@@ -145,46 +151,63 @@ dev.off()
 
 # raincloud plot for distribution of satellite data variables
 # ... bare ground
-p_bare <- df_bareground %>% 
-  ggplot(aes(period, barecover)) + 
-  geom_rain(rain.side = 'f1x1', 
-            id.long.var = "village", 
-            fill = "black", 
-            alpha = 0.2
-  ) + 
+set.seed(123)
+df_bareground_plot <- df_bareground %>% 
+  mutate(x1 = rnorm(nrow(.), 1.2, 0.05),
+         x2 = rnorm(nrow(.), 1.8, 0.05)) 
+period1_data <- df_bareground_plot %>% filter(period == "Pre")
+period2_data <- df_bareground_plot %>% filter(period == "Post")
+line_connections <- period1_data %>%
+  select(village, x1, barecover) %>%
+  rename(x_start = x1, y_start = barecover) %>%
+  left_join(period2_data %>% select(village, x2, barecover) %>%
+              rename(x_end = x2, y_end = barecover), by = "village")
+
+label_data <- line_connections %>%
+  arrange(village) %>%
+  mutate(label_side = row_number() %% 2,
+         x_label = ifelse(label_side == 0, x_start, x_end),
+         y_label = ifelse(label_side == 0, y_start, y_end))
+
+p_bare <- df_bareground_plot %>% 
+  ggplot() + 
+  geom_half_violin(data = period1_data,
+                   aes(x = period, y = barecover), side = "l", fill = "grey") +
+  geom_half_violin(data = period2_data,
+                   aes(x = period, y = barecover),  side = "r", fill = "grey") +
+  geom_segment(data = line_connections,
+               aes(x = x_start, y = y_start, xend = x_end, yend = y_end, color = village)) +
+  geom_point(data = period1_data,
+             aes(x = x1, y = barecover, col = village),  size = 3.5) +
+  geom_point(data = period2_data,
+             aes(x = x2, y = barecover, col = village),  size = 3.5) +
   theme_bw(14) +
   theme(
     text = element_text(family = fontfam),
     panel.grid.major.x = element_blank(),
     panel.grid.minor.x = element_blank(),
     panel.grid.minor.y = element_blank(),
+    legend.position = "none",
     plot.caption = element_text(family = fontfam, size= 12)
   ) +
   labs(x = "Period",
        caption = "*Bare ground area cover as proportion of total area\n(period indicated by subscript)",
        y = expression('Bare'['pre']*''^'*')) + 
-  geom_text_repel(
-    data = df_bareground %>% filter(period == "Pre"),
-    aes(x = period, 
-        y = barecover,
-        label = village),
-    size = 3.4, 
-    family = fontfam, 
-    hjust = -1/3,
-    segment.color = NA,
-    box.padding = 0.02,
-    max.overlaps = 10) +
   scale_y_continuous(trans = "logit", breaks = seq(0.1,0.5,0.1),
                      limits = c(0.1, 0.5),
-                     sec.axis = sec_axis(~., name=expression('Bare'['post']*''^'*')))
+                     sec.axis = sec_axis(~., name=expression('Bare'['post']*''^'*')))+
+  scale_color_paletteer_d("rcartocolor::Vivid")
 
 # ... rainfall
+set.seed(123)
 p_rain <- df_rainfall %>% 
-  ggplot(aes(1, rainfall)) + 
-  geom_rain(
-    fill = "black", 
-    alpha = 0.2,
-  ) +
+  mutate(x1 = rnorm(nrow(.), -0.2,0.02)) %>% 
+  ggplot() + 
+  geom_half_violin(aes(y = rainfall), fill = "grey", side = "r") + 
+  geom_point(aes(x = x1, y = rainfall, col = village, fill = village), size = 3.5) + 
+  geom_text_repel(
+    aes(x = x1, y = rainfall, label = village, col = village),
+    family = fontfam, size = 3.5, box.padding = 0.35, point.padding = 5) +
   theme_bw(14) +
   theme(
     text = element_text(family = fontfam),
@@ -193,24 +216,16 @@ p_rain <- df_rainfall %>%
     axis.title.x = element_blank(), 
     axis.text.x = element_blank(), 
     axis.ticks.x = element_blank(),
+    legend.position = "none",
     plot.caption = element_text(family = fontfam, size= 12)
   ) +
   labs(caption = "*Mean annual precipitation in mm\n(post period)",
-       y = expression('Rainfall'*''^'*')) + 
-  geom_text_repel(
-    aes(x = 1, 
-        y = rainfall, 
-        label = village),
-    size = 3.4, 
-    family = fontfam, 
-    vjust = 0,
-    segment.color = NA,
-    box.padding = 0.02,
-    max.overlaps = 6) 
-
-set.seed(12)
-png("results/plot_satellite.png", width = 2100, height = 1400, res = 220)
-p_bare + p_rain + plot_layout(widths = c(5/3,1)) + plot_annotation(tag_levels = "a") & theme(text = element_text(family = fontfam))
+       y = expression('Rainfall'*''^'*')) +
+  scale_color_paletteer_d("rcartocolor::Vivid") +
+  scale_fill_paletteer_d("rcartocolor::Vivid")
+  
+png("results/plot_satellite.png", width = 2400, height = 1400, res = 240)
+p_bare + p_rain + plot_layout(widths = c(1.2,1)) + plot_annotation(tag_levels = "a") 
 dev.off()
 
 #######################

@@ -6,8 +6,8 @@ library(ggdag)
 # plotting config
 extrafont::loadfonts(quiet = TRUE)
 fontfam <- "Segoe UI"
-onecolor_target <- "#cc99ff"
-onecolor_nuisance <- "grey80"
+onecolor_target <- "#6A0DAD"
+onecolor_nuisance <- "grey35"
 onecolor_addition <- "#fc9272"
 
 ##############
@@ -25,7 +25,7 @@ dag <- dagify(gov ~ u1 + u2 + u3 + usaid + distr,
                 x = c(usaid = 1, u1 = 2, u3 = 2.5, u0 = 3, gov = 3, distr = 3.1, sel = 3,
                       u2 = 4, out = 5, u4 = 4.5),
                 
-                y = c(u0 = 5, u1 = 4, u2 = 4, usaid = 3, gov = 3, out = 3,
+                y = c(u0 = 5.5, u1 = 4, u2 = 4, usaid = 3, gov = 3, out = 3,
                       u3 = 2, distr = 1.5, sel = 0.5, u4 = 0.75))
 )
 
@@ -46,6 +46,10 @@ df_dag1 <- dag %>%
       name == "u1" ~ onecolor_nuisance,
       name == "usaid" ~ onecolor_nuisance,
       TRUE ~ "black"),
+    interest_edge_line = case_when(
+      to == "out" & name == "gov" ~ 1, 
+      name %in% c("u0", "u1","usaid") ~ 2,
+      TRUE ~ 1),
     interest_node = case_when(
       name == "u0" ~ onecolor_nuisance,
       name == "u1" ~ onecolor_nuisance,
@@ -91,7 +95,7 @@ p_dag1 <- ggplot() +
               u4   = expression(italic(U[4])^"*"),
               usaid = expression(atop("USAID-", "EENT"))
     ),
-    size = 5,
+    size = 5.5,
     parse = TRUE,
     show.legend = FALSE,
     family = fontfam
@@ -104,7 +108,7 @@ p_dag1 <- ggplot() +
     # sort them alphabetically
     label = c(gov   = expression(theta^'Gov'),
               out   = expression(theta^'Out')),
-    size = 5,
+    size = 5.5,
     parse = TRUE,
     show.legend = FALSE,
     family = fontfam
@@ -113,26 +117,29 @@ p_dag1 <- ggplot() +
     data = df_dag1_curved,
     mapping = aes(
       edge_color = interest_edge,
-      xend = xend+0.03,
-      yend = yend+0.03,
+      edge_linetype = interest_edge_line,
+      xend = xend+0.04,
+      yend = yend+0.04,
       y = y,
       x = x),
-    curvature = c(0.275,-0.275, 0.15),
-    edge_width = 0.9) +
+    curvature = c(0.3,-0.3, 0.15),
+    edge_width = 0.8) +
   geom_dag_edges_link(
     data = df_dag1_straight,
     mapping = aes(
       edge_color = interest_edge,
-      xend = xend+0.03,
-      yend = yend+0.03,
+      edge_linetype = interest_edge_line,
+      xend = xend+0.04,
+      yend = yend+0.04,
       y = y,
       x = x),
-    edge_width = 0.9) +
+    edge_width = 0.8) +
   scale_color_manual(values = c(onecolor_target, "black", onecolor_nuisance)) + 
   scale_shape_manual(values = c(NA, 0, NA, 1)) + 
-  scale_size_manual(values = c(16, 28)) + 
+  scale_linetype_manual(values = c(1,1,2)) +
+  scale_size_manual(values = c(16, 32)) + 
   theme(text = element_text(family = fontfam),
-        plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) + 
+        plot.margin = unit(rep(0.75, 4), "cm")) +
   coord_cartesian(clip = "off")
 
 ##############
@@ -147,7 +154,7 @@ dag2 <- dagify(gov ~ u2 + u3 + distr + barepre + rain,
                latent = c("u2","u3","u4"),
                coords = list(
                  x = c(u3 = 2.5,gov = 3,distr = 3.1,sel = 3,u2 = 4,barepost = 5,u4 = 4.5,inv = 4,barepre = 4,rain = 4),
-                 y = c(u2 = 4,gov = 3,barepost = 3,sel = 0.5,u3 = 2,distr = 1.5,u4 = 0.75,inv = 2.6,barepre = 4.5,rain = 5)
+                 y = c(u2 = 4,gov = 3,barepost = 3,sel = 0.5,u3 = 2,distr = 1.5,u4 = 0.75,inv = 2.6,barepre = 4.75,rain = 5.5)
                )
 )
 
@@ -202,7 +209,7 @@ p_dag2 <- ggplot() +
       u3   = expression(italic(U[3])^"§"),
       u4   = expression(italic(U[4])^"§")
     ),
-    size = 5,
+    size = 5.5,
     parse = TRUE,
     show.legend = FALSE,
     family = fontfam
@@ -215,10 +222,10 @@ p_dag2 <- ggplot() +
         color = interest_node),
     # sort them alphabetically
     label = c(
-      barepost  = expression('Bare'['post']),
+      barepost  = expression('   Bare'['post']),
       gov   = expression(theta^'Gov')
     ),
-    size = 5,
+    size = 5.5,
     parse = TRUE,
     show.legend = FALSE,
     family = fontfam
@@ -230,20 +237,20 @@ p_dag2 <- ggplot() +
       ),
     mapping = aes(
       edge_color = interest_edge,
-      xend = xend+0.03,
-      yend = yend+0.03,
+      xend = xend+0.04,
+      yend = yend+0.04,
       y = y,
       x = x),
-    edge_width = 0.9) +
+    edge_width = 0.8) +
   scale_color_manual(values = c(onecolor_target,  onecolor_addition, "black")) +
   scale_shape_manual(values = c(NA, 0, NA, 1)) +
-  scale_size_manual(values = c(16, 28)) +
+  scale_size_manual(values = c(16, 32)) +
   theme(text = element_text(family = fontfam),
-        plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) +
+        plot.margin = unit(rep(0.75, 4), "cm")) +
   coord_cartesian(clip = "off")
 
 # export
-png("results/plot_dags.png", width = 3400, height = 1750, res = 325)
+png("results/plot_dags.png", width = 3500, height = 1800, res = 315)
 p_dag1 + p_dag2 + plot_annotation(tag_level = "a") & theme(text = element_text(family = fontfam))
 dev.off()
 
@@ -305,7 +312,7 @@ p_dag3 <- ggplot() +
       y21 = expression(italic(Y[21])),
       y22 = expression(italic(Y[22]))
     ),
-    size = 5,
+    size = 5.5,
     parse = TRUE,
     show.legend = FALSE,
     family = fontfam
@@ -317,14 +324,14 @@ p_dag3 <- ggplot() +
       yend = yend,
       y = y,
       x = x),
-    edge_width = 0.9) +
+    edge_width = 0.8) +
   scale_color_manual(values = c(onecolor_target, "black")) +
   theme(text = element_text(family = fontfam),
         plot.margin = unit(c(0.5,0.5,0.5,0.5), "cm")) +
   coord_cartesian(clip = "off")
 
 # export extended version for supplementary information
-png("results/plot_dags_extended.png", width = 3900, height = 1700, res = 340)
+png("results/plot_dags_extended.png", width = 3900, height = 1700, res = 330)
 p_dag1 + p_dag2 +  p_dag3 + plot_annotation(tag_level = "a") +
   plot_layout(widths = c(2.5,2.5,1)) & theme(text = element_text(family = fontfam))
 dev.off()
