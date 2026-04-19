@@ -2,6 +2,8 @@
 
 This repository contains data and analysis code to reproduce results from the article **"Towards a Methodological Toolkit to Mitigate the Evaluator’s Dilemma: Assessing Pastoralist Rangelands Management in Northern Tanzania"**.
 
+You can find the published article [here](https://doi.org/10.1111/csp2.70119).
+
 <body> 
  
 <div style="display: flex;"> 
